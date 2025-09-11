@@ -1,7 +1,7 @@
 #!/usr/bin/env -S zsh -f
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$(dirname "${ZSH_SCRIPT}")" && pwd)"
 
 [ -f "$ROOT_DIR/Cargo.toml" ] || { echo "Cargo.toml not found; run from project root."; exit 1; }
 command -v cargo >/dev/null 2>&1 || { echo "cargo not found; install Rust toolchain first."; exit 1; }
@@ -15,7 +15,7 @@ INSTALL_DIR="$HOME/.zsh-modules/timer"
 mkdir -p "$INSTALL_DIR"
 cp "$BUILD_LIB" "$INSTALL_DIR/timer.so"
 
-readonly INSTALL_FILE="zsh_macros"
+readonly INSTALL_FILE=".execution_timer"
 
 [[ -f "$INSTALL_FILE" ]] || exit 1
 if command -v realpath >/dev/null 2>&1; then

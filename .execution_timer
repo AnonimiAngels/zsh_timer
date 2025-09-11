@@ -1,3 +1,4 @@
+#!/usr/bin/env -S zsh -f
 # Load Rust timer module
 module_path=($module_path ~/.zsh-modules/timer)
 zmodload timer
