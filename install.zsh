@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "${ZSH_SCRIPT}")" && pwd)"
 [ -f "$ROOT_DIR/Cargo.toml" ] || { echo "Cargo.toml not found; run from project root."; exit 1; }
 command -v cargo >/dev/null 2>&1 || { echo "cargo not found; install Rust toolchain first."; exit 1; }
 
-cargo build --release
+cargo +nightly build --release
 
 BUILD_LIB="$ROOT_DIR/target/release/libtimer.so"
 [ -f "$BUILD_LIB" ] || { echo "build failed: $BUILD_LIB missing"; exit 1; }
