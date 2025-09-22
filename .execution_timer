@@ -5,26 +5,27 @@ zmodload timer
 
 typeset -g ZSH_TIME_START
 zsh_time_preexec() {
-    ZSH_TIME_START=$(date +%s.%N)
+	ZSH_TIME_START=$(date +%s.%N)
 }
 zsh_time_precmd() {
-    local rc=$?
-    local t1=$(date +%s.%N)
-    local str=$(_timer $ZSH_TIME_START $t1)
+	local rc=$?
+	[ -z "$ZSH_TIME_START" ] && return
+	local t1=$(date +%s.%N)
+	local str=$(_timer $ZSH_TIME_START $t1)
 
-    local c_time=$'\e[36m' c_duration=$'\e[33m' \
-          c_success=$'\e[32m' c_error=$'\e[31m' c_reset=$'\e[0m'
+	local c_time=$'\e[36m' c_duration=$'\e[33m' \
+		c_success=$'\e[32m' c_error=$'\e[31m' c_reset=$'\e[0m'
 
-    local status_str
-    (( rc == 0 )) \
-        && status_str="${c_success}✓ ok${c_reset}" \
-        || status_str="${c_error}✗ code $rc${c_reset}"
+	local status_str
+	(( rc == 0 )) \
+		&& status_str="${c_success}✓ ok${c_reset}" \
+		|| status_str="${c_error}✗ code $rc${c_reset}"
 
-    printf '%s%s%s -> %s%s%s (%s%s%s) %s\n' \
-           "$c_time" "$(date -d @$ZSH_TIME_START '+%F %T')" "$c_reset" \
-           "$c_time" "$(date -d @$t1 '+%F %T')" "$c_reset" \
-           "$c_duration" "$str" "$c_reset" \
-           "$status_str"
+	printf '%s%s%s -> %s%s%s (%s%s%s) %s\n' \
+		"$c_time" "$(date -d @$ZSH_TIME_START '+%F %T')" "$c_reset" \
+		"$c_time" "$(date -d @$t1 '+%F %T')" "$c_reset" \
+		"$c_duration" "$str" "$c_reset" \
+		"$status_str"
 }
 autoload -Uz add-zsh-hook
 add-zsh-hook preexec  zsh_time_preexec
